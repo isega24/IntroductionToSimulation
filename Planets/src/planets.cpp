@@ -11,7 +11,7 @@ static double * body_mass, * positionX, * nextPositionX, * positionY, * nextPosi
               * velocityX, * nextVelocityX, * velocityY, * nextVelocityY, accuracy;
 static const double G = 1;
 
-static int n_steps, n_bodies;
+static int n_steps, n_bodies, pointsDisplayed = 100;
 
 void calcGForce(int j, double & gForceX, double & gForceY){
     double Gi,Di2;
@@ -21,16 +21,19 @@ void calcGForce(int j, double & gForceX, double & gForceY){
           // Square distance from the i bodie.
           Di2 = (positionX[j]-positionX[i])*(positionX[j]-positionX[i])
           + (positionY[j]-positionY[i])*(positionY[j]-positionY[i]);
+          if(abs(Di2) > 0.1){
+              // Module of the force from the i bodie.
+              Gi = G*body_mass[j]*body_mass[i]/Di2;
 
-          // Module of the force from the i bodie.
-          Gi = G*body_mass[j]*body_mass[i]/Di2;
+              // X coordenate of the force from the i bodie.
+              gForceX -= Gi*(positionX[j]-positionX[i])/sqrt(Di2);
 
-          // X coordenate of the force from the i bodie.
-          gForceX -= Gi*(positionX[j]-positionX[i])/sqrt(Di2);
-
-          // Y coordenate of the force from the i bodie.
-          gForceY -= Gi*(positionY[j]-positionY[i])/sqrt(Di2);
-
+              // Y coordenate of the force from the i bodie.
+              gForceY -= Gi*(positionY[j]-positionY[i])/sqrt(Di2);
+          }
+          else{
+              gForceX = gForceY = 0;
+          }
         }
     }
 }
@@ -103,12 +106,15 @@ int main(int argc, char const *argv[]) {
             positionY[j] = nextPositionY[j];
             velocityX[j] = nextVelocityX[j];
             velocityY[j] = nextVelocityY[j];
-            cout << nextPositionX[j] << " " << nextPositionY[j];
-            if(j == n_bodies -1){
-                cout << endl;
-            }
-            else{
-                cout << " ";
+            if(i%pointsDisplayed == 0){
+                cout << nextPositionX[j] << " " << nextPositionY[j];
+
+                if(j == n_bodies -1){
+                    cout << endl;
+                }
+                else{
+                    cout << " ";
+                }
             }
 
         }

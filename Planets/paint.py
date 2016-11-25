@@ -14,7 +14,7 @@ for i in range(planets):
 for lin in infile:
     line = lin.split()
     for i in range(planets):
-        paintingX[i].append(float(line[2*i]))
+	paintingX[i].append(float(line[2*i]))
         paintingY[i].append(float(line[2*i+1]))
 # Cerramos el fichero.
 for i in range(planets):
