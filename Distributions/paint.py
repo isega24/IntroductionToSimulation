@@ -15,14 +15,23 @@ j = 0
 jBEF = 0
 X = []
 Y = []
+sampBEF = min
+samp = min
 for i in range(parts):
-	sum = 0.0
-	while sample[j] < i*lenParts:
-		sum =  sum + sample[j]
+	sampBEF = samp
+	if len(sample) != 0:
+		samp = sample.pop(0)
+	else:
+		samp = i*lenParts
+	while samp < i*lenParts:
 		j = j+1
-
+		if len(sample) != 0:
+                	samp = sample.pop(0)
+        	else:
+                	samp = i*lenParts
+		
 	if j > jBEF :
-		X.append((sample[jBEF]+sample[j])/2.0)
+		X.append((sampBEF+samp)/2.0)
 		Y.append(j - jBEF)
 	jBEF = j
 
