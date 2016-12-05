@@ -1,5 +1,5 @@
-CC=g++
-CFLAGS=-c -Wall
+CC=clang++-3.8
+CFLAGS=-c
 LDFLAGS=
 BIN=./bin
 SRC=./src
@@ -9,9 +9,9 @@ TXT=./txt
 vpath %.cpp src
 vpath %.h include
 
-PROGRAM=$(BIN)/planets
-OBJS=$(OBJ)/planets.o
-SRCS=$(SRC)/planets.cpp
+PROGRAM=$(BIN)/pendulum
+OBJS=$(OBJ)/pendulum.o
+SRCS=$(SRC)/pendulum.cpp
 PAINT=paint.py
 
 all:$(PROGRAM)
@@ -31,9 +31,8 @@ $(OBJ)/%.o : $(SRC)/%.cpp
 	$(CC) $(CFLAGS) -o $@ $<
 
 %.txt:all
-	$(PROGRAM) $(TXT)/$@ > $(RES)/results$@
-	python paint.py $(RES)/results$@
-	python paint2.py $(RES)/results$@
+	$(PROGRAM) < $(TXT)/$@ > $(RES)/results$@
+	python $(PAINT) $(RES)/results$@
 
 
 clean:
